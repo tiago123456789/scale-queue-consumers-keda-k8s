@@ -1,0 +1,21 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: consumer-scaledobject
+  namespace: keda
+spec:
+  scaleTargetRef:
+    name: consumer-deployment
+  minReplicaCount: 1
+  maxReplicaCount: 10
+  pollingInterval: 5
+  cooldownPeriod:  25
+  triggers:
+  - type: aws-sqs-queue
+    authenticationRef:
+      name: consumer-trigger-auth-aws-credentials
+    metadata:
+      queueURL: <queue_url_base64>
+      awsRegion: <queue_region_base64>
+      queueLength: "5"
+

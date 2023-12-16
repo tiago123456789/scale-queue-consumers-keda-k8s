@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer-deployment
+  namespace: keda
+  labels:
+    app: consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consumer
+  template:
+    metadata:
+      labels:
+        app: consumer
+    spec:
+      containers:
+      - name: nginx
+        image: tiagorosadacosta123456/study-scale-consumer-k8s
+        imagePullPolicy: Always
+        envFrom:
+        - secretRef:
+            name: consumer-secret
